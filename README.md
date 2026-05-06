@@ -1,0 +1,1 @@
+# Finadory-test-technique
