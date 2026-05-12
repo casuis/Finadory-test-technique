@@ -24,7 +24,6 @@ type NewFlowProps = {
 };
 
 type NewFormState = {
-  solarProjectType: typeof SolarProjectType.NEW_INSTALLATION;
   answers: Record<string, string | string[]>;
   contactForm: ContactFormValues;
   isContactFormValid: boolean;
@@ -42,7 +41,6 @@ const initialContactForm: ContactFormValues = {
 };
 
 const initialFormState: NewFormState = {
-  solarProjectType: SolarProjectType.NEW_INSTALLATION,
   answers: {},
   contactForm: initialContactForm,
   isContactFormValid: false,
@@ -109,6 +107,16 @@ export function NewFlow({ onBack }: NewFlowProps) {
   const progressValue = Math.round(
     ((displayCurrentStep + 1) / totalSteps) * 100
   );
+  const finalPayload = {
+    solarProjectType: SolarProjectType.NEW_INSTALLATION,
+    shared: {
+      contactForm: formState.contactForm,
+      isContactFormValid: formState.isContactFormValid,
+    },
+    newInstallation: {
+      answers: formState.answers,
+    },
+  };
 
   useEffect(() => {
     if (currentStep !== safeCurrentStep) {
@@ -167,7 +175,7 @@ export function NewFlow({ onBack }: NewFlowProps) {
           </AlertDialogHeader>
 
           <pre className="max-h-[500px] overflow-auto rounded-lg bg-slate-950 p-4 text-sm text-slate-50">
-            {JSON.stringify(formState, null, 2)}
+            {JSON.stringify(finalPayload, null, 2)}
           </pre>
 
           <AlertDialogFooter>

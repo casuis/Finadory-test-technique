@@ -21,7 +21,6 @@ type ExistingFlowProps = {
 };
 
 type ExistingFormState = {
-  solarProjectType: typeof SolarProjectType.EXISTING_INSTALLATION;
   answers: Record<string, string>;
   equipmentTiming: string;
   contactForm: ContactFormValues;
@@ -40,7 +39,6 @@ const initialContactForm: ContactFormValues = {
 };
 
 const initialFormState: ExistingFormState = {
-  solarProjectType: SolarProjectType.EXISTING_INSTALLATION,
   answers: {},
   equipmentTiming: "",
   contactForm: initialContactForm,
@@ -106,6 +104,16 @@ export function ExistingFlow({ onBack }: ExistingFlowProps) {
   const progressValue = Math.round(
     ((displayCurrentStep + 1) / totalSteps) * 100
   );
+  const finalPayload = {
+    solarProjectType: SolarProjectType.EXISTING_INSTALLATION,
+    shared: {
+      contactForm: formState.contactForm,
+      isContactFormValid: formState.isContactFormValid,
+    },
+    existingInstallation: {
+      answers: formState.answers,
+    },
+  };
 
   useEffect(() => {
     if (currentStep !== safeCurrentStep) {
@@ -163,7 +171,7 @@ export function ExistingFlow({ onBack }: ExistingFlowProps) {
           </AlertDialogHeader>
 
           <pre className="max-h-[500px] overflow-auto rounded-lg bg-slate-950 p-4 text-sm text-slate-50">
-            {JSON.stringify(formState, null, 2)}
+            {JSON.stringify(finalPayload, null, 2)}
           </pre>
 
           <AlertDialogFooter>
